@@ -16,7 +16,7 @@ spec:
         - name: docker-secret
       containers:
         - name: app
-          image: registry.internal.uia.no/ikt206-g-24v-devops/examgroup11/flask-example:production
+          image: olavte/ikt206g24v06:main
           imagePullPolicy: Always
           recourses:
           ports:
