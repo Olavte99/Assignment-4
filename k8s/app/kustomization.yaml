@@ -4,7 +4,7 @@ namespace: app
 
 resources:
   - namespace.yaml
-  - production-secret.yaml
+  - app-secret.yaml
   - docker-secret.yaml
   - service.yaml
   - pvc.yaml
