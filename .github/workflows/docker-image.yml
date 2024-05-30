@@ -40,5 +40,6 @@ jobs:
           context: .
           push: true
           tags: olavte/ikt206g24v06:main
+          
 
 
