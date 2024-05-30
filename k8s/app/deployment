@@ -1,0 +1,137 @@
+# Flask deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      imagePullSecrets:
+        - name: docker-secret
+      containers:
+        - name: app
+          image: registry.internal.uia.no/ikt206-g-24v-devops/examgroup11/flask-example:production
+          imagePullPolicy: Always
+          recourses:
+          ports:
+            - containerPort: 5000
+          env:
+            - name: FLASK_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: FLASK_ENV
+            - name: DB_PRODUCTION_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: DB_PRODUCTION_USERNAME
+            - name: DB_PRODUCTION_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: DB_PRODUCTION_PASSWORD
+            - name: DB_PRODUCTION_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: DB_PRODUCTION_DB_NAME
+            - name: DB_PRODUCTION_HOSTNAME
+              value: app-svc.app.svc.cluster.local
+          volumeMounts:
+            - name: storage
+              mountPath: /mnt/data
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: app-pvc
+
+
+
+#Postgres deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          recourses:
+          ports:
+            - containerPort: 5432
+          env:
+            - name: FLASK_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: FLASK_ENV
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: DB_PRODUCTION_USERNAME
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: DB_PRODUCTION_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: production-secret
+                  key: DB_PRODUCTION_DB_NAME
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: data
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
+
+
+
+# Nginx deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config
