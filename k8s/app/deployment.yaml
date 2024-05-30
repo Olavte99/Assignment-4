@@ -16,7 +16,7 @@ spec:
         - name: docker-secret
       containers:
         - name: app
-          image: olavte/ikt206g24v06:main
+          image: olavte/app:main
           imagePullPolicy: Always
           recourses:
           ports:
