@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from config import Config
-from forms import LoginForm, OrderForm
+from forms import LoginForm, OrderForm, RegistrationForm  # Add this import
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -38,6 +38,17 @@ def create_app():
             else:
                 flash('Login Unsuccessful. Please check username and password', 'danger')
         return render_template('login.html', form=form)
+    
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            flash('Your account has been created! You can now log in.', 'success')
+            return redirect(url_for('login'))
+        return render_template('register.html', title='Register', form=form)
 
     @app.route('/order', methods=['GET', 'POST'])
     @login_required
