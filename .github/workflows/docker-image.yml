@@ -16,8 +16,8 @@ jobs:
  
       - name: Install Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
