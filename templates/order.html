@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Place an Order</h1>
+<form method="POST" action="{{ url_for('order') }}">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.item.label }}<br>
+        {{ form.item(size=32) }}<br>
+        {% for error in form.item.errors %}
+            <span>{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.quantity.label }}<br>
+        {{ form.quantity() }}<br>
+        {% for error in form.quantity.errors %}
+            <span>{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}
