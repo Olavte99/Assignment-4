@@ -1,7 +1,6 @@
-```markdown
 # Experiment Setup Guide
 
-This is what i used to run and test my app on.  The instructions provided here are specifically for Ubuntu systems.
+This is what i used to run and test my app on. The instructions provided here are specifically for Ubuntu systems.
 
 ## Prerequisites
 
@@ -57,4 +56,3 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ## Note
 
 This project is not complete due to time constraints.
-```
