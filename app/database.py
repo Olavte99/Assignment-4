@@ -1,15 +1,19 @@
 import psycopg2
 
+import os
+import psycopg2
+
 def connect_to_database():
     """Connect to the PostgreSQL database."""
     try:
         conn = psycopg2.connect(
-            dbname="A_db-name",
-            user="A_user",
-            password="A_password",
-            host="DB_HOSTNAME",
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USERNAME"),
+            password=os.getenv("DB_PASSWORD"),
+            host=os.getenv("DB_HOSTNAME"),
             port="5432"
         )
+        print("Connection successful!")
         return conn
     except psycopg2.Error as e:
         print("Error connecting to the database:", e)
