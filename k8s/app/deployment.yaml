@@ -42,8 +42,9 @@ spec:
                 secretKeyRef:
                   name: app-secret
                   key: DB_NAME
+                  
             - name: DB_HOSTNAME
-              value: app-svc.app.svc.cluster.local
+              value: postgres-svc.app.svc.cluster.local
           volumeMounts:
             - name: storage
               mountPath: /mnt/data
