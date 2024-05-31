@@ -4,10 +4,10 @@ def connect_to_database():
     """Connect to the PostgreSQL database."""
     try:
         conn = psycopg2.connect(
-            dbname="your_database_name",
-            user="your_username",
-            password="your_password",
-            host="localhost"
+            dbname="A_db-name",
+            user="A_user",
+            password="A_password",
+            host="app-svc.app.svc.cluster.local"
         )
         return conn
     except psycopg2.Error as e:
