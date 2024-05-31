@@ -2,7 +2,7 @@
 
 This is what i used to run and test my app on. The instructions provided here are specifically for Ubuntu systems.
 
-## Prerequisites
+## Installing Kubectl 
 
 Ensure that `kubectl` is installed on your system. If not, follow these steps to install it:
 
