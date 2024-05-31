@@ -50,9 +50,8 @@ def create_tables(conn):
     else:
         print("Database connection failed.")
 
-def add_user():
+def add_user(conn):
     """Add a new user to the database."""
-    conn = connect_to_database()
     if conn is not None:
         try:
             cur = conn.cursor()
@@ -73,10 +72,23 @@ def add_user():
             print("Error adding user:", e)
         finally:
             cur.close()
-            conn.close()
     else:
         print("Database connection failed.")
 
-if __name__ == "__main__":
-    create_tables()  # Create tables when executed directly
-    add_user()       # Add a user when executed directly
+def authenticate(username, password):
+    """Authenticate user."""
+    conn = connect_to_database()
+    if conn is not None:
+        try:
+            cur = conn.cursor()
+            # Query the database to check if the user exists and the password matches
+            cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+            user = cur.fetchone()
+            if user:
+                return True  # Authentication successful
+        except psycopg2.Error as e:
+            print("Error authenticating user:", e)
+        finally:
+            cur.close()
+            conn.close()
+    return False  # Authentication failed
