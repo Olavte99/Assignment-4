@@ -7,7 +7,8 @@ def connect_to_database():
             dbname="A_db-name",
             user="A_user",
             password="A_password",
-            host="app-svc.app.svc.cluster.local"
+            host="postgres-svc.app.svc.cluster.local"
+            port="5432"
         )
         return conn
     except psycopg2.Error as e:
