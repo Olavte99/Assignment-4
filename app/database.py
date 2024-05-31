@@ -77,6 +77,7 @@ def add_user(conn):
 
 def authenticate(username, password):
     """Authenticate user."""
+    print("Authenticating user:", username)
     conn = connect_to_database()
     if conn is not None:
         try:
@@ -85,7 +86,10 @@ def authenticate(username, password):
             cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
             user = cur.fetchone()
             if user:
+                print("Authentication successful for user:", username)
                 return True  # Authentication successful
+            else:
+                print("Authentication failed for user:", username)
         except psycopg2.Error as e:
             print("Error authenticating user:", e)
         finally:
