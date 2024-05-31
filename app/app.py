@@ -10,6 +10,10 @@ conn = connect_to_database()
 create_tables(conn)
 add_user(conn)
 
+def index():
+    users = get_users()
+    return render_template('index.html', users=users)
+
 @app.route('/')
 def index():
     return render_template('index.html')

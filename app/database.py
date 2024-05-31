@@ -81,3 +81,20 @@ def authenticate(username, password):
             cur.close()
             conn.close()
     return False  # Authentication failed
+
+def get_users():
+    """Fetch all users from the database."""
+    conn = connect_to_database()
+    if conn is not None:
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT username FROM users")
+            users = cur.fetchall()
+            return [user[0] for user in users]
+        except psycopg2.Error as e:
+            print("Error fetching users:", e)
+            return []
+        finally:
+            cur.close()
+            conn.close()
+    return []
