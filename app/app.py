@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
-from database import connect_to_database
+from database import connect_to_database, create_tables
 
 app = Flask(__name__)
 
 # Database connection
 conn = connect_to_database()
+create_tables()
 
 # User authentication (you'll need to implement this)
 def authenticate(username, password):
