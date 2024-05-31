@@ -20,22 +20,22 @@ if conn is not None:
     conn.close()
 
 # User authentication
-def authenticate(username, password):
-    conn = get_db_connection()
-    if conn is not None:
-        try:
-            cur = conn.cursor()
-            # Query the database to check if the user exists and the password matches
-            cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
-            user = cur.fetchone()
-            if user:
-                return True  # Authentication successful
-        except Exception as e:
-            print("Error authenticating user:", e)
-        finally:
-            cur.close()
-            conn.close()
-    return False  # Authentication failed
+# def authenticate(username, password):
+#     conn = get_db_connection()
+#     if conn is not None:
+#         try:
+#             cur = conn.cursor()
+#             # Query the database to check if the user exists and the password matches
+#             cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+#             user = cur.fetchone()
+#             if user:
+#                 return True  # Authentication successful
+#         except Exception as e:
+#             print("Error authenticating user:", e)
+#         finally:
+#             cur.close()
+#             conn.close()
+#     return False  # Authentication failed
 
 @app.route('/')
 def index():
