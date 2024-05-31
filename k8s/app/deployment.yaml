@@ -27,22 +27,22 @@ spec:
                 secretKeyRef:
                   name: app-secret
                   key: FLASK_ENV
-            - name: DB_PRODUCTION_USERNAME
+            - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PRODUCTION_USERNAME
-            - name: DB_PRODUCTION_PASSWORD
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PRODUCTION_PASSWORD
-            - name: DB_PRODUCTION_DB_NAME
+                  key: DB_PASSWORD
+            - name: DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PRODUCTION_DB_NAME
-            - name: DB_PRODUCTION_HOSTNAME
+                  key: DB_NAME
+            - name: DB_HOSTNAME
               value: app-svc.app.svc.cluster.local
           volumeMounts:
             - name: storage
@@ -85,17 +85,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PRODUCTION_USERNAME
+                  key: DB_USERNAME
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PRODUCTION_PASSWORD
+                  key: DB_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PRODUCTION_DB_NAME
+                  key: DB_NAME
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
