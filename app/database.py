@@ -15,9 +15,8 @@ def connect_to_database():
         print("Error connecting to the database:", e)
         return None
 
-def create_tables():
+def create_tables(conn):
     """Create necessary tables in the database."""
-    conn = connect_to_database()
     if conn is not None:
         try:
             cur = conn.cursor()
@@ -48,7 +47,6 @@ def create_tables():
             print("Error creating tables:", e)
         finally:
             cur.close()
-            conn.close()
     else:
         print("Database connection failed.")
 
