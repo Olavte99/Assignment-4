@@ -4,13 +4,12 @@ kind: Service
 metadata:
   name: app-svc
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: app
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30420
 
 
 
