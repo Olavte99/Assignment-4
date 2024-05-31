@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple E-commerce Platform</title>
+</head>
+<body>
+    <h1>Welcome to our Store!</h1>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - {{ product.price }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/login">Login</a>  <a href="/order">Order Now</a>  </body>
+</html>
