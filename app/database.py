@@ -20,7 +20,6 @@ def create_tables(conn):
     if conn is not None:
         try:
             cur = conn.cursor()
-            # Define SQL queries to create tables
             create_table_users = """
                 CREATE TABLE IF NOT EXISTS users (
                     id SERIAL PRIMARY KEY,
@@ -37,63 +36,48 @@ def create_tables(conn):
                     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """
-            # Execute SQL queries
             cur.execute(create_table_users)
             cur.execute(create_table_orders)
-            # Commit changes
             conn.commit()
             print("Tables created successfully.")
         except psycopg2.Error as e:
             print("Error creating tables:", e)
         finally:
             cur.close()
-    else:
-        print("Database connection failed.")
 
 def add_user(conn):
     """Add a new user to the database."""
     if conn is not None:
         try:
             cur = conn.cursor()
-            # Define user data
             username = "admin"
             password = "admin"
-            # Define SQL query to insert user
             insert_user_query = """
                 INSERT INTO users (username, password)
                 VALUES (%s, %s)
+                ON CONFLICT (username) DO NOTHING
             """
-            # Execute SQL query with user data
             cur.execute(insert_user_query, (username, password))
-            # Commit the transaction
             conn.commit()
-            print("User added successfully.")
+            print("User added successfully or already exists.")
         except psycopg2.Error as e:
             print("Error adding user:", e)
         finally:
             cur.close()
-    else:
-        print("Database connection failed.")
 
 def authenticate(username, password):
     """Authenticate user."""
-    print("Authenticating user:", username)
     conn = connect_to_database()
     if conn is not None:
         try:
             cur = conn.cursor()
-            # Query the database to check if the user exists and the password matches
             cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
             user = cur.fetchone()
             if user:
-                print("Authentication successful for user:", username)
                 return True  # Authentication successful
-            else:
-                print("Authentication failed for user:", username)
         except psycopg2.Error as e:
             print("Error authenticating user:", e)
         finally:
             cur.close()
             conn.close()
     return False  # Authentication failed
-
