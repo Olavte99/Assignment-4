@@ -1,5 +1,3 @@
-import psycopg2
-
 import os
 import psycopg2
 
@@ -53,21 +51,24 @@ def add_user(conn):
     """Add a new user to the database."""
     if conn is not None:
         try:
-            cur = conn.cursor()
-            username = "admin"
-            password = "admin"
-            insert_user_query = """
-                INSERT INTO users (username, password)
-                VALUES (%s, %s)
-                ON CONFLICT (username) DO NOTHING
-            """
-            cur.execute(insert_user_query, (username, password))
-            conn.commit()
-            print("User added successfully or already exists.")
+            with conn.cursor() as cur:
+                username = "admin"
+                password = "admin"
+                insert_user_query = """
+                    INSERT INTO users (username, password)
+                    VALUES (%s, %s)
+                    ON CONFLICT (username) DO NOTHING
+                """
+                cur.execute(insert_user_query, (username, password))
+                conn.commit()
+                if cur.rowcount == 0:
+                    print("User already exists.")
+                else:
+                    print("User added successfully.")
         except psycopg2.Error as e:
             print("Error adding user:", e)
-        finally:
-            cur.close()
+    else:
+        print("Connection is None. Cannot add user.")
 
 def authenticate(username, password):
     """Authenticate user."""
