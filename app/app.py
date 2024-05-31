@@ -1,9 +1,10 @@
 from flask import Flask, render_template, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from config import Config
 from forms import LoginForm, OrderForm, RegistrationForm
-from database import db
 
+db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 
@@ -37,7 +38,7 @@ def create_app():
             else:
                 flash('Login Unsuccessful. Please check username and password', 'danger')
         return render_template('login.html', form=form)
-    
+
     @app.route('/register', methods=['GET', 'POST'])
     def register():
         form = RegistrationForm()
