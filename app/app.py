@@ -4,20 +4,38 @@ from database import connect_to_database, create_tables, add_user
 app = Flask(__name__)
 
 # Database connection
-conn = connect_to_database()
-create_tables()
-add_user()
+def get_db_connection():
+    try:
+        conn = connect_to_database()
+        return conn
+    except Exception as e:
+        print("Error connecting to the database:", e)
+        return None
 
-# User authentication (you'll need to implement this)
+# Create tables and add user
+conn = get_db_connection()
+if conn is not None:
+    create_tables(conn)
+    add_user(conn)
+    conn.close()
+
+# User authentication
 def authenticate(username, password):
-    # Authenticate user against database or any other method
-    # Return True if authentication is successful, False otherwise
-    # Example:
-    # if username == "valid_username" and password == "valid_password":
-    #     return True
-    # else:
-    #     return False
-    return True  # For testing purposes, always return True
+    conn = get_db_connection()
+    if conn is not None:
+        try:
+            cur = conn.cursor()
+            # Query the database to check if the user exists and the password matches
+            cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+            user = cur.fetchone()
+            if user:
+                return True  # Authentication successful
+        except Exception as e:
+            print("Error authenticating user:", e)
+        finally:
+            cur.close()
+            conn.close()
+    return False  # Authentication failed
 
 @app.route('/')
 def index():
@@ -38,7 +56,7 @@ def login():
 
 @app.route('/dashboard')
 def dashboard():
-    # Check if user is logged in (you'll need to implement this)
+    # Check if user is logged in
     # For testing purposes, always assume user is logged in
     logged_in = True
     if logged_in:
