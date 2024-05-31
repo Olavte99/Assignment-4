@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place an Order - Simple E-Commerce</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Place an Order</h1>
+    </header>
+    <main>
+        <form action="{{ url_for('order') }}" method="post">
+            <label for="product">Product:</label>
+            <select id="product" name="product" required>
+                <!-- Populate with product options -->
+                <option value="product1">Product 1</option>
+                <option value="product2">Product 2</option>
+                <option value="product3">Product 3</option>
+            </select>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+            <button type="submit">Place Order</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple E-Commerce</p>
+    </footer>
+</body>
+</html>
