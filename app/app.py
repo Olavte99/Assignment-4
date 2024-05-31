@@ -22,7 +22,9 @@ if conn is not None:
 
 # User authentication
 def authenticate(username, password):
-    conn = get_db_connection()
+    """Authenticate user."""
+    print("Authenticating user:", username)
+    conn = connect_to_database()
     if conn is not None:
         try:
             cur = conn.cursor()
@@ -30,8 +32,11 @@ def authenticate(username, password):
             cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
             user = cur.fetchone()
             if user:
+                print("Authentication successful for user:", username)
                 return True  # Authentication successful
-        except Exception as e:
+            else:
+                print("Authentication failed for user:", username)
+        except psycopg2.Error as e:
             print("Error authenticating user:", e)
         finally:
             cur.close()
@@ -48,13 +53,15 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        print("Login attempt for user:", username)
         if authenticate(username, password):
-            # Redirect to dashboard if authentication is successful
+            print("Redirecting to dashboard for user:", username)
             return redirect(url_for('dashboard'))
         else:
-            # Authentication failed, redirect back to login page
+            print("Login failed for user:", username)
             return redirect(url_for('login'))
     return render_template('login.html')
+
 
 @app.route('/dashboard')
 def dashboard():

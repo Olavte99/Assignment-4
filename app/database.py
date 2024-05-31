@@ -96,3 +96,4 @@ def authenticate(username, password):
             cur.close()
             conn.close()
     return False  # Authentication failed
+
